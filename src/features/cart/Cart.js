@@ -1,40 +1,44 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Cart = () => {
+  const productsState = useSelector((state) => {
+    return state.products;
+  });
   return (
     <div className="row">
       <div className="col-xl-12">
         {/* loop thru here */}
-        {/* {productsState.cartItems?.map((cartItem) => { */}
-          {/* return ( */}
-            <div className="card border shadow-none" >
+        {productsState.cartItems?.map((cartItem) => {
+          return (
+            <div className="card border shadow-none" key={cartItem.id}>
               <div className="card-body">
                 <div className="d-flex align-items-start pb-3">
                   <div className="me-4">
-                    {/* <img
+                    <img
                       src={cartItem.image}
                       alt={cartItem.title}
                       className="avatar-lg rounded"
                       height="100px"
-                    /> */}
+                    />
                   </div>
                   <div className="flex-grow-1 align-self-center overflow-hidden">
                     <div className="col-md-9">
                       <h5 className="text-truncate font-size-18">
-                        <a href="#" className="text-dark">
-                          title
+                        <a href="/" className="text-dark">
+                          {cartItem.title}
                         </a>
                       </h5>
                       <p className="mb-0 mt-1">
                         Category :{" "}
-                        <span className="fw-medium">category</span>
+                        <span className="fw-medium">{cartItem.category}</span>
                       </p>
                       <div className="mt-3">
                         <p className="text-muted mb-2">Price</p>
                         <h5 className="mb-0 mt-2">
                           <span className="text-muted me-2">
-                            price
+                            {cartItem.price}
                           </span>
                         </h5>
                       </div>
@@ -44,7 +48,7 @@ const Cart = () => {
               </div>
             </div>
           );
-        {/* })} */}
+        })}
 
         {/* end card */}
         <div className="row my-4">

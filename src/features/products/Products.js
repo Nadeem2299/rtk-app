@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProductsAsync } from "./productsSlice";
+import { addToCart, fetchProductsAsync } from "./productsSlice";
+// import { getProducts } from "./productsSlice";
 
 const Products = () => {
   const productState = useSelector((state) => {
@@ -9,8 +10,14 @@ const Products = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchProductsAsync());
-  }, []);
+    // dispatch(getProducts());
+    dispatch(fetchProductsAsync())
+  }, [dispatch]);
+
+  const handleAddToCart = (product) => {
+    console.log(product);
+    dispatch(addToCart(product))
+  }
 
   if (productState.isLoading) {
     return <div className="spinner-border"></div>;
@@ -42,7 +49,7 @@ const Products = () => {
                   <button
                     type="button"
                     className="btn btn-primary"
-                    // onClick={() => handleAddToCart(product)}
+                    onClick={() => handleAddToCart(product)}
                   >
                     Add to Cart
                   </button>

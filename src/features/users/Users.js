@@ -18,7 +18,7 @@ const Users = () => {
     // dispatch an action from here
 
     dispatch(fetchUsersAsync());
-  }, []);
+  }, [dispatch]);
 
   
   console.log('2. program ended with initial rendering')

@@ -5,6 +5,7 @@ const initialState = {
   isLoading: false,
   isError: false,
   productList: [],
+  cartItems: [],
   status: "idle",
 };
 
@@ -21,7 +22,21 @@ export const fetchProductsAsync = createAsyncThunk(
 export const productSlice = createSlice({
   name: "products",
   initialState,
-  reducers: {},
+  reducers: {
+    // fetchProducts: (state, action) => {
+    //     console.log(state); // product feature data from store
+    //     // directly update the store
+    //     state.productList = action.payload  
+    // }
+    // todo learn error handling in this approach
+
+    // the functuons added here will be available to export from actions
+    addToCart: (state, action) => {
+        console.log(state); // entire store data relevent to this feature
+        console.log(action);
+        state.cartItems = [...state.cartItems, action.payload];
+    }
+  },
   extraReducers: (builder) => {
     console.log(builder);
     // builder
@@ -47,8 +62,18 @@ export const productSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.status = "Some error occured";
-      });
-  },
+      })
+}
 });
 
+export const { addToCart } = productSlice.actions;
+// export const { fetchProducts } = productSlice.actions;
 export default productSlice.reducer;
+
+// export const getProducts = () => {
+//     return async function getProductsAsync(dispatch, getState){
+//         const response = await axios.get('https://fakestoreapi.com/products')
+//         console.log(response);
+//         dispatch(fetchProducts(response.data));
+//     }
+// }
