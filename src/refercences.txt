@@ -1,0 +1,220 @@
+Any to Any Comp Commn (2015-16)
+State Management in React Apps
+
+  1. ReactJS + Flux [Not Maintained anymore]
+      * too much complexity 
+
+  2. ReactJS + Redux (2016 till today)    ==> a.k.a classic redux [LEARN SEPARATELY]
+      * complex
+      Middleware Integrations (choose anyone)
+        1. redux-thunk (38-40 steps)
+        2. redux-saga (46 steps)
+
+      Tools to be integrated 
+        * react-redux 
+        * @redux-devtools/extension
+        * immer.js 
+  
+  3. ReactJS + ContextAPI (Hooks)  (2019 till today) (Demo'd in prime-video-app)
+      * Easier 
+
+  4. ReactJS + Redux-Toolkit (Redux, React-Redux, Redux-thunk)   => a.k.a modern redux 
+      * Easier 
+      Middleware Integrations 
+        1. redux-thunk (default one)
+        2. redux-saga 
+
+      Tools, by default integrated 
+        * react-redux 
+        * @redux-devtools/extension
+        * immer.js 
+
+  
+
+
+======
+How to create JS based react-toolkit project?
+  npx create-react-app my-app --template redux 
+
+How to create TS based react-toolkit project?
+  npx degit reduxjs/redux-templates/packages/vite-template-redux my-app
+
+
+3 Important Concepts of Redux 
+----
+  Store
+    the whole state of the app.
+  
+  Action
+    what happens in the app 
+
+  Reducer 
+    updates the store based on the action happened 
+
+
+CSS Moldule
+
+App.module.css
+.red-text {
+    color: red;
+}
+
+App.js
+import styles from './Counter.module.css';
+
+<div>
+    <div className={styles.red-text}>wow</div>
+    <Footer />
+</div>
+
+Footer.js 
+<footer>
+    <p className={styles.red-text}>Copyright</p>
+</footer>
+
+// learn about styled components
+
+// new Promise (() => {}) {pending}
+// fetch('') {pending}
+
+
+3 Principles of Redux 
+-----
+  1. There should be single source of truth for the whole app. i.e Store
+      (it should be an object)
+  2. The only way to update the state is by dispatching an action 
+      that tells what happened in the app 
+  3. Reducer should update the store based on action occurred 
+      and also based on previous and next state 
+
+
+createSlice({}) 
+  * needs name 
+  * initial state object 
+  * also the reducers fns  
+
+
+Steps for Redux Toolkit Implementations
+=====
+Step 1: 
+---
+  Create Users comp in src/features/users/Users.js 
+
+    import React from 'react'
+
+    const Users = () => {
+      return (
+        <div>Users</div>
+      )
+    }
+
+    export default Users;
+
+------
+Step 2: 
+---
+  Create slice for the feature 
+
+  import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addUserAsync, fetchUsersAsync } from "./usersSlice";
+
+const Users = () => {
+  const usersInfo = useSelector((state) => { // getting state item from store
+    return state.users;
+  });
+  const dispatch = useDispatch(); // getting dispatch from store
+
+  useEffect(() => {
+    dispatch(fetchUsersAsync());
+  }, []);
+  console.log(usersInfo);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    dispatch(addUserAsync({
+      name: 'a',
+      email: 'a@b.com',
+      phone: 12345678
+    }));
+  }
+
+  if (usersInfo.isLoading) {
+    return <div className="spinner-border text-primary"></div>;
+  }
+
+  if (usersInfo.isError) {
+    return <div>Some error occurred! Try again Later</div>;
+  }
+
+  return (
+    <div className="row">
+      <h1>Users</h1>
+
+      <div className="col-md-4">
+        <h2>Add User</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Enter Name"
+            className="form-control"
+          />
+          <br />
+          <input
+            type="text"
+            placeholder="Enter Phone"
+            className="form-control"
+          />
+          <br />
+          <input
+            type="text"
+            placeholder="Enter E-Mail"
+            className="form-control"
+          />
+          <br />
+          <button type="submit" className="btn btn-primary">Create User</button>
+        </form>
+      </div>
+
+      <div className="col-md-8">
+        <div className="row">
+          {usersInfo.userList?.map((user) => {
+            return (
+              <div className="col-md-4" key={user.id}>
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">{user.name}</h5>
+                    <h6 className="card-subtitle mb-2 text-muted">
+                      E-Mail: {user.email}
+                    </h6>
+                    <p className="card-text">Phone: {user.phone}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Users;
+
+Step 3:
+-------
+  in src/app/store.js 
+
+  import { configureStore } from '@reduxjs/toolkit';
+  import counterReducer from '../features/counter/counterSlice';
+  import usersReducer from "../features/users/usersSlice";
+
+  export const store = configureStore({
+    reducer: {
+      counter: counterReducer,
+      users: usersReducer,
+    },
+  });
+
+Now, Check the app!
+---
