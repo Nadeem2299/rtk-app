@@ -77,6 +77,9 @@ export const userSlice = createSlice({
   initialState,
   // Let's have the obj full of reducer function
   reducers: {
+    // if you want to update store locally without connecting to rest api
+    // write the logic here - this is meant for sync calls
+
     addUser: (state) => {
       // state is data from store of this feature
       // state.userList = [...state.userList, state.payload]
@@ -93,6 +96,7 @@ export const userSlice = createSlice({
   // including action displached by other slices also
   extraReducers: (builder) => {
     console.log(builder);
+    // builder
     builder
       .addCase(fetchUsersAsync.pending, (state) => {
         console.log(state);

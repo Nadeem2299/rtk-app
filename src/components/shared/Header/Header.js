@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -23,6 +23,9 @@ const Header = () => {
           <NavLink to="/products" className="nav-link">
             Products
           </NavLink>
+        </li>
+        <li>
+          <Link to='/cart'><button className="btn btn-danger">Cart(0)</button></Link>
         </li>
       </ul>
     </header>
